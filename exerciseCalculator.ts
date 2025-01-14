@@ -20,14 +20,14 @@ const parseArgs = (args: string[]): ExerciseValues => {
 
   values.forEach((arg) => {
     if (isNaN(Number(arg))) throw new Error('Provided values were not numbers!');
-  })
+  });
 
   const argsAsNumbers = values.map(Number);
 
-  return { target: argsAsNumbers[0], exercises: argsAsNumbers.slice(1) }
-}
+  return { target: argsAsNumbers[0], exercises: argsAsNumbers.slice(1) };
+};
 
-const calculateExercises = (days: number[], target: number): Result => {
+export const calculateExercises = (days: number[], target: number): Result => {
   const periodLength = days.length;
   const trainingDays = days.filter((hours) => hours != 0).length;
   const average = days.reduce((a, b) => a + b) / periodLength;
@@ -60,14 +60,16 @@ const calculateExercises = (days: number[], target: number): Result => {
     ratingDescription,
     target,
     average
-  }
-}
+  };
+};
 
-try {
-  const { target, exercises } = parseArgs(process.argv);
-  console.log(calculateExercises(exercises, target));
-}  catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log('Error:', error.message)
+if (require.main === module) {
+  try {
+    const { target, exercises } = parseArgs(process.argv);
+    console.log(calculateExercises(exercises, target));
+  }  catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Error:', error.message);
+    }
   }
-}
+};
