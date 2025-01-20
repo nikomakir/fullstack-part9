@@ -1,6 +1,10 @@
-import { Patient } from "../types";
+import { Patient, Diagnosis } from "../types";
 
-const PatientInfo = ({ patient }: { patient: Patient | null }) => {
+const PatientInfo = ({ patient, diagnoses }: {
+  patient: Patient | null,
+  diagnoses: Diagnosis[]
+}) => {
+
   if (!patient) {
     return null;
   }
@@ -13,6 +17,19 @@ const PatientInfo = ({ patient }: { patient: Patient | null }) => {
         ssn: {patient.ssn ? patient.ssn : 'Not available'}<br/>
         occupation: {patient.occupation}
       </p>
+      <p><b>entries</b></p>
+      {patient.entries?.map(e => (
+        <div key={e.id}>
+          <p>{e.date} <i>{e.description}</i></p>
+          <ul>
+            {e.diagnosisCodes?.map((code) => (
+              <li key={code}>
+                {code} {diagnoses.find(d => d.code === code)?.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 };
